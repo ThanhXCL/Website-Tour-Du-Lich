@@ -1,0 +1,10 @@
+mixin options(list, level = 0, currentId = "", leafOnly = false)
+  each item in list
+    if (!leafOnly || !item.children || item.children.length === 0)
+      - const prefix = "--".repeat(level);
+      option(
+        value=item.id
+        selected=(item.id == currentId ? true : false)
+        ) #{prefix} #{item.name}
+    if (item.children && item.children.length > 0)
+      +options(item.children, level + 1, currentId, leafOnly)

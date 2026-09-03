@@ -1,0 +1,827 @@
+// Menu Mobile
+const buttonMenuMobile = document.querySelector(".header .inner-menu-mobile");
+if (buttonMenuMobile) {
+    const menu = document.querySelector(".header .inner-menu");
+    const overlay = document.querySelector(".header .inner-overlay");
+
+    // Click vao button se mo menu 
+    buttonMenuMobile.addEventListener("click", () => {
+        menu.classList.add("active");
+    })
+
+    // Click vao overlay dong menu 
+    overlay.addEventListener("click", () => {
+        menu.classList.remove("active");
+    })
+
+    // Click vao icon down de mo sub menu
+    const listButtonSubMenu = menu.querySelectorAll("ul > li > i");
+    listButtonSubMenu.forEach(button => {
+        button.addEventListener("click", () => {
+            const li = button.closest("li");
+            li.classList.toggle("active");
+        })
+    })
+}
+// End Menu Mobile
+
+// Box Address Section 1
+const boxAddressSection1 = document.querySelector(".section-1 .inner-form .inner-address");
+if (boxAddressSection1) {
+    const inputName = boxAddressSection1.querySelector('[data-role="locationToName"]');
+    const inputId = boxAddressSection1.querySelector('[name="locationTo"]');
+
+    inputName.addEventListener("focus", () => {
+        boxAddressSection1.classList.add("active");
+    })
+
+    inputName.addEventListener("blur", () => {
+        boxAddressSection1.classList.remove("active");
+    })
+
+    inputName.addEventListener("input", () => {
+        if (inputId) {
+            inputId.value = "";
+        }
+    })
+
+    const listItem = boxAddressSection1.querySelectorAll(".inner-suggest-list .inner-item")
+    listItem.forEach(item => {
+        item.addEventListener("mousedown", () => {
+            const title = item.querySelector(".inner-item-title")?.textContent.trim();
+            const cityId = item.getAttribute("data-city-id");
+            if (title && inputName) {
+                inputName.value = title;
+            }
+            if (cityId && inputId) {
+                inputId.value = cityId;
+            }
+        })
+    })
+}
+// End Box Address Section 1
+
+// Box User Section 1
+const boxUserSection1 = document.querySelector(".section-1 .inner-form .inner-user");
+if (boxUserSection1) {
+    // Hien box quantity
+    const input = boxUserSection1.querySelector(".inner-input");
+
+    input.addEventListener("focus", () => {
+        boxUserSection1.classList.add("active");
+    })
+
+    // // An box quantity
+    document.addEventListener("click", (event) => {
+        if (!boxUserSection1.contains(event.target)) {
+            boxUserSection1.classList.remove("active");
+        }
+    })
+
+    // Cap nhat so luong trong o input 
+    const updateQuantityInput = () => {
+        const listBoxNumber = boxUserSection1.querySelectorAll(".inner-quantity .inner-number");
+        const listNumber = [];
+        listBoxNumber.forEach(item => {
+            const number = parseInt(item.value);
+            listNumber.push(number);
+        })
+        input.value = `NL: ${listNumber[0]}, TE: ${listNumber[1]}, EB: ${listNumber[2]}`;
+    }
+
+    // Bat su kien click vao nut up 
+    const listButtonUp = boxUserSection1.querySelectorAll(".inner-quantity .inner-up");
+    listButtonUp.forEach(button => {
+        button.addEventListener("click", () => {
+            const parent = button.closest(".inner-count");
+            const boxNumber = parent.querySelector(".inner-number");
+            const number = parseInt(boxNumber.value);
+            const numberUpdate = number + 1;
+            boxNumber.value = numberUpdate;
+            updateQuantityInput();
+        })
+    })
+
+    // Bat su kien click vao nut down 
+    const listButtonDown = boxUserSection1.querySelectorAll(".inner-quantity .inner-down");
+    listButtonDown.forEach(button => {
+        button.addEventListener("click", () => {
+            const parent = button.closest(".inner-count");
+            const boxNumber = parent.querySelector(".inner-number");
+            const number = parseInt(boxNumber.value);
+            if (number > 0) {
+                const numberUpdate = number - 1;
+                boxNumber.value = numberUpdate;
+                updateQuantityInput();
+            }
+        })
+    })
+}
+// End Box User Section 1
+
+// Clock Expire
+const clockExpire = document.querySelector("[clock-expire]");
+if (clockExpire) {
+    const expireDateTimeString = clockExpire.getAttribute("clock-expire");
+    const expireDateTime = new Date(expireDateTimeString);
+
+    // Lay ra thoi gian hien tai
+    const updateClock = () => {
+        const now = new Date();
+        const remainingTime = expireDateTime - now;
+
+        if (remainingTime > 0) {
+            const days = Math.floor(remainingTime / (24 * 60 * 60 * 1000)); // 24 giờ * 60 phút * 60 giây * 1000 mili giây
+            const hours = Math.floor(remainingTime / (60 * 60 * 1000) % 24);
+            const minutes = Math.floor(remainingTime / (60 * 1000) % 60);
+            const seconds = Math.floor(remainingTime / (1000) % 60);
+
+            const listInnerNumber = clockExpire.querySelectorAll(".inner-number");
+            listInnerNumber[0].innerHTML = days > 9 ? days : `0${days}`;
+            listInnerNumber[1].innerHTML = hours > 9 ? hours : `0${hours}`;
+            listInnerNumber[2].innerHTML = minutes > 9 ? minutes : `0${minutes}`;
+            listInnerNumber[3].innerHTML = seconds > 9 ? seconds : `0${seconds}`;
+        } else {
+            clearInterval(intervalClock);
+        }
+    }
+
+    const intervalClock = setInterval(updateClock, 1000);
+}
+// End Clock Expire
+
+// Box Filter
+const buttonFilterMobile = document.querySelector(".section-9 .inner-filter-mobile");
+if (buttonFilterMobile) {
+    const boxLeft = document.querySelector(".section-9 .inner-left");
+    const overlay = document.querySelector(".section-9 .inner-left .inner-overlay");
+
+    buttonFilterMobile.addEventListener("click", () => {
+        boxLeft.classList.add("active");
+    })
+
+    overlay.addEventListener("click", () => {
+        boxLeft.classList.remove("active");
+    })
+}
+// End Box Filter 
+
+// Box Tour Info
+const boxTourInfo = document.querySelector(".section-10 .box-tour-info");
+if (boxTourInfo) {
+    const buttonReadMore = boxTourInfo.querySelector(".inner-read-more button");
+
+    buttonReadMore.addEventListener("click", () => {
+        if (boxTourInfo.classList.contains("active")) {
+            boxTourInfo.classList.remove("active");
+            buttonReadMore.innerHTML = "Xem tất cả";
+        } else {
+            boxTourInfo.classList.add("active");
+            buttonReadMore.innerHTML = "Ẩn bớt";
+        }
+    })
+
+    // Zoom anh
+    const boxContent = boxTourInfo.querySelector(".inner-content");
+    if (boxContent) {
+        new Viewer(boxContent);
+    }
+}
+// End Box Tour Info 
+
+// Khoi tao AOS
+AOS.init();
+// Het Khoi tao AOS 
+
+// Swiper Section 2
+const swiperSection2 = document.querySelector(".swiper-section-2");
+if (swiperSection2) {
+    new Swiper(".swiper-section-2", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        loop: true,
+        breakpoints: {
+            992: {
+                slidesPerView: 2,
+            },
+            1200: {
+                slidesPerView: 3,
+            },
+        },
+    });
+}
+// End Swiper Section 2 
+
+// Swiper Section 3
+const swiperSection3 = document.querySelector(".swiper-section-3");
+if (swiperSection3) {
+    new Swiper(".swiper-section-3", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        loop: true,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+            },
+            576: {
+                slidesPerView: 2,
+            },
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+}
+// End Swiper Section 3
+
+// Box Images
+const boxImages = document.querySelector(".section-10 .box-images");
+if (boxImages) {
+    const swiperBoxImagesThumb = new Swiper(".swiper-box-images-thumb", {
+        spaceBetween: 5,
+        slidesPerView: 4,
+        breakpoints: {
+            576: {
+                spaceBetween: 10,
+            },
+        },
+    });
+    const swiperBoxImagesMain = new Swiper(".swiper-box-images-main", {
+        spaceBetween: 0,
+        thumbs: {
+            swiper: swiperBoxImagesThumb,
+        },
+    });
+}
+// End Box Images
+
+// Zoom Box Images Main
+const boxImagesMain = document.querySelector(".box-images .inner-images-main");
+if (boxImagesMain) {
+    new Viewer(boxImagesMain);
+}
+// Het Zoom Box Images Main
+
+// Zoom Box Tour Schedule
+const boxTourSchedule = document.querySelector(".box-tour-schedule");
+if (boxTourSchedule) {
+    const listBoxContent = boxTourSchedule.querySelectorAll(".inner-content");
+    listBoxContent.forEach(boxContent => {
+        new Viewer(boxContent);
+    })
+}
+// End Zoom Box Tour Schedule
+
+// Email Form
+const emailForm = document.querySelector("#email-form");
+if (emailForm) {
+    const validator = new JustValidate('#email-form');
+
+    validator
+        .addField('#email-input', [
+            {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập email!'
+            },
+            {
+                rule: 'email',
+                errorMessage: 'Email không đúng định dạng!'
+            },
+        ])
+        .onSuccess((event) => {
+            const email = event.target.email.value; //Đầy đủ ra là: event.target.elements.email.value
+
+            const dataFinal = {
+                email, // email: email,
+            };
+
+            fetch(`/contact/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dataFinal)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.code == "error") {
+                        notify.error(data.message);
+                    }
+
+                    if (data.code == "success") {
+                        notify.success(data.message);
+                        emailForm.email.value = "";
+                    }
+                })
+        })
+}
+// End Email Form 
+
+// Coupon Form
+const couponForm = document.querySelector("#coupon-form");
+if (couponForm) {
+    const validator = new JustValidate('#coupon-form');
+
+    validator
+        .addField('#coupon-input', [
+            {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập mã giảm giá!'
+            },
+        ])
+        .onSuccess((event) => {
+            const coupon = event.target.coupon.value; //Đầy đủ ra là: event.target.elements.coupon.value
+            console.log(coupon)
+        })
+}
+// End Coupon Form 
+
+// Order Form
+const orderForm = document.querySelector("#order-form");
+if (orderForm) {
+    const validator = new JustValidate('#order-form');
+
+    validator
+        .addField('#fullname-input', [
+            {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập họ tên!'
+            },
+            {
+                rule: 'minLength',
+                value: 5,
+                errorMessage: 'Họ tên phải có ít nhất 5 ký tự!'
+            },
+            {
+                rule: 'maxLength',
+                value: 50,
+                errorMessage: 'Họ tên không được vượt quá 50 ký tự!'
+            },
+        ])
+        .addField('#phone-input', [
+            {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập số điện thoại!'
+            },
+            {
+                rule: 'customRegexp',
+                value: /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/,
+                errorMessage: 'Số điện thoại không đúng định dạng!'
+            },
+        ])
+        .onSuccess((event) => {
+            const fullName = event.target.fullName.value;
+            const phone = event.target.phone.value;
+            const email = event.target.email?.value || '';
+            const note = event.target.note.value;
+            const paymentMethod = event.target.method.value;
+
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            cart = cart.filter(item => {
+                return (item.checked == true) && (item.quantityAdult > 0 || item.quantityChildren > 0 || item.quantityBaby > 0);
+            })
+
+            if (cart.length > 0) {
+                const dataFinal = {
+                    fullName: fullName,
+                    phone: phone,
+                    email: email,
+                    note: note,
+                    paymentMethod: paymentMethod,
+                    items: cart
+                };
+
+                fetch(`/order/create`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dataFinal)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.code == "error") {
+                            notify.error(data.message);
+                        }
+
+                        if (data.code == "success") {
+                            // Cap nhat gio hang 
+                            let cart = JSON.parse(localStorage.getItem("cart"));
+                            cart = cart.filter(item => item.checked == false);
+                            localStorage.setItem("cart", JSON.stringify(cart));
+
+                            switch (paymentMethod) {
+                                case "money":
+                                case "bank":
+                                    // Chuyen sang trang dat hang thanh cong 
+                                    window.location.href = `/order/success?orderCode=${data.orderCode}&phone=${data.phone}`;
+                                    break;
+
+                                case "vnpay":
+                                    // Chuyen sang trang thanh toan bang vnpay 
+                                    window.location.href = `/order/payment-vnpay?orderCode=${data.orderCode}&phone=${data.phone}`;
+                                    break;
+                            }
+                        }
+                    })
+            } else {
+                notify.error("Vui lòng đặt ít nhất 1 tour!");
+            }
+        })
+
+    // List Input Method
+    const listInputMethod = orderForm.querySelectorAll(`input[name="method"]`);
+    const innerInfoBank = orderForm.querySelector(".inner-info-bank");
+
+    listInputMethod.forEach(input => {
+        input.addEventListener("change", () => {
+            if (input.value == "bank") {
+                innerInfoBank.classList.add("active");
+            } else {
+                innerInfoBank.classList.remove("active");
+            }
+        })
+    })
+    // End List Input Method 
+}
+// End Order Form 
+
+
+// Box Filter
+const boxFilter = document.querySelector(".box-filter");
+if (boxFilter) {
+    const url = new URL(window.location.href);
+    const button = boxFilter.querySelector(".inner-button");
+
+    const filterList = [
+        "locationFrom",
+        "locationTo",
+        "departureDate",
+        "stockAdult",
+        "stockChildren",
+        "stockBaby",
+        "price"
+    ];
+
+    button.addEventListener("click", () => {
+        for (const item of filterList) {
+            const value = boxFilter.querySelector(`[name="${item}"]`).value;
+            if (value) {
+                url.searchParams.set(item, value);
+            } else {
+                url.searchParams.delete(item);
+            }
+        }
+        window.location.href = url.href;
+    })
+
+    // Hien thi gia tri mac dinh 
+    const urlCurrent = new URL(window.location.href);
+    for (const item of filterList) {
+        const valueCurrent = urlCurrent.searchParams.get(item);
+        if (valueCurrent) {
+            boxFilter.querySelector(`[name="${item}"]`).value = valueCurrent;
+        }
+    }
+}
+// End Box Filter 
+
+// Form Search
+const formSearch = document.querySelector("[form-search]");
+if (formSearch) {
+    const filterList = [
+        "locationTo",
+        "departureDate",
+        "stockAdult",
+        "stockChildren",
+        "stockBaby",
+    ];
+
+    const resolveLocationToId = () => {
+        const locationIdInput = formSearch.querySelector('[name="locationTo"]');
+        const locationNameInput = formSearch.querySelector('[data-role="locationToName"]');
+        if (!locationIdInput || locationIdInput.value || !locationNameInput?.value.trim()) {
+            return;
+        }
+
+        const cities = JSON.parse(formSearch.getAttribute("data-cities") || "[]");
+        const keyword = locationNameInput.value.trim().toLowerCase();
+        const city = cities.find((item) => item.name.toLowerCase() === keyword);
+        if (city) {
+            locationIdInput.value = city.id;
+        }
+    };
+
+    formSearch.addEventListener("submit", (event) => {
+        event.preventDefault();
+        resolveLocationToId();
+
+        const url = new URL(`${window.location.origin}/search`);
+        for (const item of filterList) {
+            const value = formSearch.querySelector(`[name="${item}"]`)?.value;
+            if (value) {
+                url.searchParams.set(item, value);
+            } else {
+                url.searchParams.delete(item);
+            }
+        }
+        window.location.href = url.href;
+    })
+}
+// End Form Search
+
+// Initial Cart
+const cart = localStorage.getItem("cart");
+if (!cart) {
+    localStorage.setItem("cart", JSON.stringify([]));
+}
+// End Initial Cart 
+
+// Mini Cart
+const drawMiniCart = () => {
+    const miniCart = document.querySelector("[mini-cart]");
+    if (miniCart) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        miniCart.innerHTML = cart.length;
+    }
+}
+drawMiniCart();
+// End Mini Cart 
+
+// Box Tour Detail 
+const boxTourDetail = document.querySelector(".box-tour-detail");
+if (boxTourDetail) {
+    const listInputQuantity = boxTourDetail.querySelectorAll("[input-quantity]");
+    const elementTotalPrice = boxTourDetail.querySelector("[total-price]");
+
+    const drawBoxDetail = () => {
+        let totalPrice = 0;
+        listInputQuantity.forEach(input => {
+            let quantity = parseInt(input.value);
+            const fieldName = input.getAttribute("input-quantity");
+            const price = parseInt(input.getAttribute("data-price"));
+            const min = parseInt(input.getAttribute("min"));
+            const max = parseInt(input.getAttribute("max"));
+
+            if (quantity < min) {
+                notify.error(`Số lượng phải >= ${min}`);
+                input.value = min;
+                quantity = min;
+            }
+
+            if (quantity > max) {
+                notify.error(`Số lượng phải <= ${max}`);
+                input.value = max;
+                quantity = max;
+            }
+
+            const labelQuantity = boxTourDetail.querySelector(`[label-quantity="${fieldName}"]`);
+            labelQuantity.innerHTML = quantity;
+
+            totalPrice += price * quantity;
+        })
+        elementTotalPrice.innerHTML = totalPrice.toLocaleString("vi-VN");
+    };
+
+    listInputQuantity.forEach(input => {
+        input.addEventListener("input", () => {
+            drawBoxDetail();
+        })
+    })
+
+    const buttonAddTourCart = boxTourDetail.querySelector(".inner-button-add-cart");
+    const tourId = buttonAddTourCart.getAttribute("tour-id");
+
+    buttonAddTourCart.addEventListener("click", () => {
+        const locationFrom = boxTourDetail.querySelector(`[name="locationFrom"]`)?.value || "";
+        const quantityAdult = parseInt(boxTourDetail.querySelector(`[name="quantityAdult"]`).value);
+        const quantityChildren = parseInt(boxTourDetail.querySelector(`[name="quantityChildren"]`).value);
+        const quantityBaby = parseInt(boxTourDetail.querySelector(`[name="quantityBaby"]`).value);
+
+        if (quantityAdult > 0 || quantityChildren > 0 || quantityBaby > 0) {
+            const item = {
+                tourId: tourId,
+                locationFrom: locationFrom,
+                quantityAdult: quantityAdult,
+                quantityChildren: quantityChildren,
+                quantityBaby: quantityBaby,
+                checked: true
+            };
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            const existIndexItem = cart.findIndex(itemCart => itemCart.tourId == tourId);
+            if (existIndexItem != -1) {
+                cart[existIndexItem] = item;
+            } else {
+                cart.unshift(item);
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            notify.success("Đã thêm sản phẩm vào giỏ hàng!");
+            drawMiniCart();
+        } else {
+            notify.error("Số lượng phải > 0");
+        }
+    })
+
+    // Hien thi gia tri mac dinh 
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const existItem = cart.find(item => item.tourId == tourId);
+    if (existItem) {
+        const locationFromElement = boxTourDetail.querySelector(`[name="locationFrom"]`);
+        if (locationFromElement) {
+            locationFromElement.value = existItem.locationFrom;
+        }
+        boxTourDetail.querySelector(`[name="quantityAdult"]`).value = existItem.quantityAdult;
+        boxTourDetail.querySelector(`[name="quantityChildren"]`).value = existItem.quantityChildren;
+        boxTourDetail.querySelector(`[name="quantityBaby"]`).value = existItem.quantityBaby;
+    }
+}
+// End Box Tour Detail 
+
+// Page Cart
+const drawCart = () => {
+    const cart = localStorage.getItem("cart");
+
+    fetch(`/cart/detail`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: cart
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.code == "error") {
+                notify.error(data.message);
+            }
+
+            if (data.code == "success") {
+                // Hien thi cac item ra giao dien 
+                let subTotal = 0;
+
+                const htmlArray = data.cart.map(item => {
+                    if (item.checked) {
+                        subTotal += (item.quantityAdult * item.priceNewAdult + item.quantityChildren * item.priceNewChildren + item.quantityBaby * item.priceNewBaby);
+                    }
+                    return `
+                        <div class="inner-tour-item" bis_skin_checked="1">
+                            <div class="inner-actions" bis_skin_checked="1">
+                                <button class="inner-delete" button-delete tour-id="${item.tourId}">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                                <input class="inner-check" type="checkbox" ${item.checked ? "checked" : ""} input-check tour-id="${item.tourId}">
+                            </div>
+                            <div class="inner-product" bis_skin_checked="1">
+                                <div class="inner-image" bis_skin_checked="1">
+                                    <a href="/tour/detail/${item.slug}" bis_size="{&quot;x&quot;:117,&quot;y&quot;:373,&quot;w&quot;:174,&quot;h&quot;:20,&quot;abs_x&quot;:117,&quot;abs_y&quot;:373}">
+                                        <img alt="${item.name}" src="${item.avatar}" bis_size="{&quot;x&quot;:117,&quot;y&quot;:244,&quot;w&quot;:174,&quot;h&quot;:145,&quot;abs_x&quot;:117,&quot;abs_y&quot;:244}" bis_id="bn_98a375oyi7kmp3kgr0jnck">
+                                    </a>
+                                </div>
+                                <div class="inner-content" bis_skin_checked="1">
+                                    <div class="inner-title" bis_skin_checked="1">
+                                        <a href="/tour/detail/${item.slug}">
+                                            ${item.name}
+                                        </a>
+                                    </div>
+                                    <div class="inner-meta" bis_skin_checked="1">
+                                        <div bis_skin_checked="1">Ngày Khởi Hành: <b>${item.departureDate}</b></div>
+                                        <div bis_skin_checked="1">Khởi Hành Tại: <b>${item.cityName}</b></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inner-quantity" bis_skin_checked="1">
+                                <div class="inner-label" bis_skin_checked="1">Số Lượng Hành Khách</div>
+                                <div class="inner-list" bis_skin_checked="1">
+                                    <div class="inner-item" bis_skin_checked="1">
+                                        <div class="inner-item-label" bis_skin_checked="1">Người lớn:</div>
+                                        <div class="inner-item-input" bis_skin_checked="1">
+                                            <input value="${item.quantityAdult}" min="0" max="${item.stockAdult}" type="number" name="quantityAdult" tour-id="${item.tourId}">
+                                        </div>
+                                        <div class="inner-item-price" bis_skin_checked="1">
+                                            <span>${item.quantityAdult}</span>
+                                            <span>x</span>
+                                            <span class="inner-hl">${item.priceNewAdult.toLocaleString("vi-VN")}</span>
+                                        </div>
+                                    </div>
+                                    <div class="inner-item" bis_skin_checked="1">
+                                        <div class="inner-item-label" bis_skin_checked="1">Trẻ em:</div>
+                                        <div class="inner-item-input" bis_skin_checked="1">
+                                            <input value="${item.quantityChildren}" min="0" max="${item.stockChildren}" type="number" name="quantityChildren" tour-id="${item.tourId}">
+                                        </div>
+                                        <div class="inner-item-price" bis_skin_checked="1">
+                                            <span>${item.quantityChildren}</span>
+                                            <span>x</span>
+                                            <span class="inner-hl">${item.priceNewChildren.toLocaleString("vi-VN")}</span>
+                                        </div>
+                                    </div>
+                                    <div class="inner-item" bis_skin_checked="1">
+                                        <div class="inner-item-label" bis_skin_checked="1">Em bé:</div>
+                                        <div class="inner-item-input" bis_skin_checked="1">
+                                            <input value="${item.quantityBaby}" min="0" max="${item.stockBaby}" type="number" name="quantityBaby" tour-id="${item.tourId}">
+                                        </div>
+                                        <div class="inner-item-price" bis_skin_checked="1">
+                                            <span>${item.quantityBaby}</span>
+                                            <span>x</span>
+                                            <span class="inner-hl">${item.priceNewBaby.toLocaleString("vi-VN")}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                })
+
+                const discount = 0;
+                total = subTotal - discount;
+
+                const elementCartList = pageCart.querySelector("[cart-list]");
+                if (htmlArray.length > 0) {
+                    elementCartList.innerHTML = htmlArray.join("");
+                } else {
+                    elementCartList.innerHTML = `
+                        <div class="inner-no-data">Giỏ hàng rỗng.</div>
+                    `;
+                }
+                const elementSubTotal = pageCart.querySelector("[cart-sub-total]");
+                elementSubTotal.innerHTML = subTotal.toLocaleString("vi-VN");
+                const elementTotal = pageCart.querySelector("[cart-total]");
+                elementTotal.innerHTML = total.toLocaleString("vi-VN");
+
+                // Su kien cap nhat lai so luong 
+                const listInputQuantity = elementCartList.querySelectorAll(`.inner-tour-item .inner-quantity input`);
+                listInputQuantity.forEach(input => {
+                    input.addEventListener("input", () => {
+                        const tourId = input.getAttribute("tour-id");
+                        const fieldName = input.name;
+                        let quantity = parseInt(input.value);
+                        const min = parseInt(input.getAttribute("min"));
+                        const max = parseInt(input.getAttribute("max"));
+
+                        if (quantity < min) {
+                            notify.error(`Số lượng phải >= ${min}`);
+                            input.value = min;
+                            quantity = min;
+                        }
+
+                        if (quantity > max) {
+                            notify.error(`Số lượng phải <= ${max}`);
+                            input.value = max;
+                            quantity = max;
+                        }
+
+                        const cart = JSON.parse(localStorage.getItem("cart"));
+                        const indexItem = cart.findIndex(item => item.tourId == tourId);
+                        if (indexItem != -1) {
+                            cart[indexItem][fieldName] = quantity;
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            drawCart();
+                        }
+                    })
+                })
+
+                // Su kien xoa tour khoi gio hang 
+                const listButtonDelete = elementCartList.querySelectorAll(`[button-delete]`);
+                listButtonDelete.forEach(button => {
+                    button.addEventListener("click", () => {
+                        const tourId = button.getAttribute("tour-id");
+                        let cart = JSON.parse(localStorage.getItem("cart"));
+                        cart = cart.filter(item => item.tourId != tourId);
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        notify.success("Đã xoá tour khỏi giỏ hàng!");
+                        drawCart();
+                        drawMiniCart();
+                    })
+                })
+
+                // Su kien check tour 
+                const listInputCheck = elementCartList.querySelectorAll(`[input-check]`);
+                listInputCheck.forEach(input => {
+                    input.addEventListener("change", () => {
+                        const tourId = input.getAttribute("tour-id");
+                        const checked = input.checked;
+                        const cart = JSON.parse(localStorage.getItem("cart"));
+                        const indexItem = cart.findIndex(item => item.tourId == tourId);
+                        if (indexItem != -1) {
+                            cart[indexItem]["checked"] = checked;
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            drawCart();
+                        }
+                    })
+                })
+            }
+        })
+}
+
+const pageCart = document.querySelector("[page-cart]");
+if (pageCart) {
+    drawCart();
+}
+// End Page Cart 

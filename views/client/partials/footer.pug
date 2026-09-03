@@ -1,0 +1,71 @@
+footer.footer(id="contact")
+  .container
+    .inner-top
+      .inner-title Đăng ký ngay để không bỏ lỡ các chương trình của chúng tôi
+      form#email-form.inner-form(action="")
+        input#email-input(
+          placeholder="Nhập email của bạn..." 
+          name="email" 
+          type="email"
+          )
+        button Đăng Ký Ngay
+    .inner-middle
+      nav.inner-links
+        ul
+          li
+            a(href="/") Trang Chủ
+          li
+            //- [FIX] Sửa slug: tour-trong-nc -> tour-trong-nuoc
+            a(href="/category/tour-trong-nuoc") Tour Trong Nước
+          li
+            a(href="/category/tour-nuoc-ngoai") Tour Nước Ngoài
+          li
+            a(href="/#news") Tin Tức
+          li
+            a(href="/#contact") Liên Hệ
+      nav.inner-socials
+        ul
+          li
+            a(
+              target="_blank" 
+              href="#"
+              )
+              i.fa-brands.fa-facebook
+          li
+            a(
+              target="_blank" 
+              href="#"
+              )
+              i.fa-brands.fa-x-twitter
+          li
+            a(
+              target="_blank" 
+              href="#"
+              )
+              i.fa-brands.fa-instagram
+          li
+            a(
+              target="_blank" 
+              href="#"
+              )
+              i.fa-brands.fa-youtube
+    .inner-bottom
+      .inner-copyright Xin chào
+      .inner-logo
+        a(href="#")
+          img(
+            alt=settingWebsiteInfo.websiteName
+            src=settingWebsiteInfo.logo
+            )
+      nav.inner-links
+        ul
+          li
+            a(
+              target="_blank" 
+              href="#"
+              ) Điều khoản dịch vụ
+          li
+            a(
+              target="_blank" 
+              href="#"
+              ) Chính sách bảo mật
